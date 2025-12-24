@@ -1,0 +1,223 @@
+/* =========================================================
+   Jellyfin Web Theme: CineStream (CSS ONLY, no JS)
+   Netflix-ish polish, NOT red, safe (doesn't break layout)
+   Paste into Jellyfin Custom CSS OR host as theme.css
+   ========================================================= */
+
+:root{
+  --cs-accent: #22d3ee;         /* cyan */
+  --cs-accent2:#7c5cff;         /* violet */
+  --cs-good:   #10b981;
+
+  --cs-bg0: #070912;
+  --cs-bg1: #0b1020;
+  --cs-bg2: #0a0f1c;
+
+  --cs-surface: rgba(255,255,255,.055);
+  --cs-surface2: rgba(255,255,255,.085);
+  --cs-border: rgba(255,255,255,.10);
+
+  --cs-text: rgba(255,255,255,.92);
+  --cs-dim:  rgba(255,255,255,.68);
+  --cs-faint:rgba(255,255,255,.50);
+
+  --cs-radius-lg: 18px;
+  --cs-radius-md: 14px;
+
+  --cs-shadow: 0 18px 70px rgba(0,0,0,.62);
+  --cs-shadow-soft: 0 10px 40px rgba(0,0,0,.45);
+
+  --cs-blur: 16px;
+  --cs-ease: cubic-bezier(.2,.8,.2,1);
+  --cs-fast: 160ms;
+
+  --cs-focus: 0 0 0 3px rgba(34,211,238,.28);
+
+  --cs-font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans";
+}
+
+/* Background + base */
+html, body{
+  background:
+    radial-gradient(1200px 900px at 12% 10%, rgba(124,92,255,.16), transparent 60%),
+    radial-gradient(1000px 800px at 85% 25%, rgba(34,211,238,.12), transparent 55%),
+    radial-gradient(900px 650px at 40% 95%, rgba(16,185,129,.07), transparent 60%),
+    linear-gradient(180deg, var(--cs-bg1), var(--cs-bg0)) !important;
+  color: var(--cs-text) !important;
+  font-family: var(--cs-font) !important;
+}
+
+*{
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbars */
+*::-webkit-scrollbar{ width: 12px; height: 12px; }
+*::-webkit-scrollbar-track{ background: rgba(255,255,255,.04); }
+*::-webkit-scrollbar-thumb{
+  background: linear-gradient(180deg, rgba(34,211,238,.55), rgba(124,92,255,.40));
+  border-radius: 999px;
+  border: 3px solid rgba(0,0,0,.25);
+}
+*{ scrollbar-width: thin; scrollbar-color: rgba(34,211,238,.55) rgba(255,255,255,.04); }
+
+/* Links */
+a, .link, .button-link{ color: var(--cs-text) !important; }
+a:hover{ color: #fff !important; }
+
+/* =========================================================
+   App chrome: header + drawer
+   (broad selectors for Jellyfin web versions)
+   ========================================================= */
+.headerTop, .appheader, .skinHeader, .topHeader, .mainHeader{
+  background: rgba(8,11,20,.62) !important;
+  border-bottom: 1px solid var(--cs-border) !important;
+  backdrop-filter: blur(var(--cs-blur));
+  -webkit-backdrop-filter: blur(var(--cs-blur));
+}
+
+/* Side nav / drawer */
+.mainDrawer, .navDrawer, .drawer, .paperList{
+  background: rgba(8,11,20,.68) !important;
+  border-right: 1px solid var(--cs-border) !important;
+  backdrop-filter: blur(var(--cs-blur));
+  -webkit-backdrop-filter: blur(var(--cs-blur));
+}
+
+.navMenuOption, .paperList a{
+  color: var(--cs-dim) !important;
+  border-radius: 12px !important;
+}
+.navMenuOption:hover, .paperList a:hover{
+  background: rgba(255,255,255,.06) !important;
+  color: var(--cs-text) !important;
+}
+.navMenuOption-selected, .selectedMenuOption{
+  background: linear-gradient(90deg, rgba(34,211,238,.22), rgba(255,255,255,.04)) !important;
+  color: #fff !important;
+  border-left: 3px solid var(--cs-accent) !important;
+}
+
+/* Containers transparent (don’t change layout) */
+.page, .mainAnimatedPage, .libraryPage, .homePage, .pageContent, .scrollY{
+  background: transparent !important;
+}
+
+/* =========================================================
+   Surfaces: dialogs/panels/cards (safe, no layout changes)
+   ========================================================= */
+.paper, .raised, .dialog, .toast,
+.detailPagePrimaryContainer, .detailPageSecondaryContainer,
+.playlistPage, .userProfilesPage{
+  background: var(--cs-surface) !important;
+  border: 1px solid var(--cs-border) !important;
+  border-radius: var(--cs-radius-lg) !important;
+  box-shadow: var(--cs-shadow-soft);
+  backdrop-filter: blur(calc(var(--cs-blur) * .85));
+  -webkit-backdrop-filter: blur(calc(var(--cs-blur) * .85));
+}
+
+/* Cards */
+.card, .cardBox, .itemsContainer .card, .homeSectionsContainer .card{
+  border-radius: var(--cs-radius-lg) !important;
+  transform: translateZ(0);
+}
+
+/* Poster rounding */
+.cardImageContainer, .cardImage, .cardContent,
+.primaryImageWrapper, .primaryImageWrapper img,
+.cardImageContainer img{
+  border-radius: var(--cs-radius-lg) !important;
+}
+
+/* Hover polish: lift only (no scale = more “native”) */
+.cardBox:hover, .card:hover, .itemsContainer .card:hover{
+  transform: translateY(-3px);
+  transition: transform var(--cs-fast) var(--cs-ease),
+              box-shadow var(--cs-fast) var(--cs-ease),
+              border-color var(--cs-fast) var(--cs-ease);
+  border-color: rgba(34,211,238,.30) !important;
+  box-shadow: var(--cs-shadow);
+}
+
+/* Section titles */
+.homePage .sectionTitle, .homePage h2, .homePage h3{
+  font-weight: 650 !important;
+  letter-spacing: .2px !important;
+}
+
+/* Text hierarchy */
+.secondaryText, .fieldDescription, .labelText, .overview, .mediaInfo, .itemDetailValue{
+  color: var(--cs-dim) !important;
+}
+
+/* Dividers */
+hr, .divider, .horizontalDivider, .sectionDivider{
+  border-color: rgba(255,255,255,.08) !important;
+  opacity: 1 !important;
+}
+
+/* =========================================================
+   Controls: buttons / inputs / focus
+   ========================================================= */
+button, .button, .emby-button, .raisedButton, .paper-icon-button-light{
+  border-radius: var(--cs-radius-md) !important;
+  border: 1px solid rgba(255,255,255,.12) !important;
+}
+button:hover, .button:hover, .emby-button:hover{
+  border-color: rgba(34,211,238,.35) !important;
+}
+
+/* Primary CTA */
+.emby-button.submit, .button-submit, .raisedButton.submit, .btnPrimary, .fab{
+  background: linear-gradient(135deg, var(--cs-accent), var(--cs-accent2)) !important;
+  border: none !important;
+  color: #fff !important;
+}
+.emby-button.submit:hover, .button-submit:hover, .btnPrimary:hover{
+  filter: brightness(1.06);
+}
+
+/* Inputs */
+input, textarea, select, .inputContainer input, .selectContainer select{
+  background: rgba(255,255,255,.06) !important;
+  border: 1px solid rgba(255,255,255,.12) !important;
+  border-radius: var(--cs-radius-md) !important;
+  color: var(--cs-text) !important;
+}
+input::placeholder, textarea::placeholder{ color: rgba(255,255,255,.45) !important; }
+
+/* Focus (remote/keyboard friendly) */
+:where(a, button, input, textarea, select, [tabindex]):focus-visible{
+  outline: none !important;
+  box-shadow: var(--cs-focus) !important;
+  border-color: rgba(34,211,238,.55) !important;
+}
+
+/* =========================================================
+   Player OSD (keep readable)
+   ========================================================= */
+.nowPlayingPage, .playerPage, .videoOsdBottom, .videoOsdTop, .osdHeader, .osdControls{
+  background: rgba(8,11,20,.52) !important;
+  backdrop-filter: blur(var(--cs-blur));
+  -webkit-backdrop-filter: blur(var(--cs-blur));
+}
+
+/* =========================================================
+   Detail page “hero” polish (CSS-only, no route detection)
+   Applied whenever detail container exists.
+   ========================================================= */
+.detailPagePrimaryContainer{
+  overflow: hidden !important;
+  position: relative !important;
+}
+.detailPagePrimaryContainer::before{
+  content:"";
+  position:absolute; inset:-2px;
+  background:
+    radial-gradient(1000px 600px at 18% 15%, rgba(34,211,238,.16), transparent 60%),
+    radial-gradient(900px 600px at 78% 30%, rgba(124,92,255,.12), transparent 58%),
+    linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.42));
+  pointer-events:none;
+}

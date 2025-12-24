@@ -1,197 +1,166 @@
 /* =========================================================
-   CineStream v3 — Netflix-like layout (CSS only)
-   Replace your theme.css with this.
+   NFlixLike (10.11.x-targeted) — CSS ONLY
+   Focus: shelves/rows, card sizing, hover behavior, spacing.
    ========================================================= */
 
 :root{
-  --cs-accent:#22d3ee;     /* cyan */
-  --cs-accent2:#7c5cff;    /* violet */
+  --nf-accent:#22d3ee;
+  --nf-accent2:#7c5cff;
 
-  --cs-bg:#070912;
-  --cs-bg2:#0b1020;
+  --nf-bg0:#070912;
+  --nf-bg1:#0b1020;
 
-  --cs-text:rgba(255,255,255,.94);
-  --cs-dim: rgba(255,255,255,.70);
+  --nf-text:rgba(255,255,255,.94);
+  --nf-dim: rgba(255,255,255,.70);
 
-  --cs-r:14px;
-  --cs-r2:12px;
-
-  --cs-ease:cubic-bezier(.2,.8,.2,1);
-  --cs-fast:160ms;
+  --nf-r:14px;
+  --nf-ease:cubic-bezier(.2,.8,.2,1);
 
   /* Netflix-like density */
-  --cs-page-pad: clamp(14px, 2.4vw, 34px);
-  --cs-row-gap: 14px;
-  --cs-card-gap: 10px;
+  --nf-page-pad: clamp(14px, 2.4vw, 34px);
+  --nf-row-gap: 14px;
+  --nf-card-gap: 10px;
 
-  /* Card sizing (you can tweak these) */
-  --cs-card-w: clamp(240px, 22vw, 420px);  /* landscape rows like Continue Watching */
-  --cs-card-h: clamp(135px, 12.5vw, 230px);
+  /* Landscape shelf cards (like your screenshot) */
+  --nf-card-w: clamp(240px, 22vw, 420px);
+  --nf-card-h: clamp(135px, 12.5vw, 230px);
 
-  --cs-shadow: 0 22px 90px rgba(0,0,0,.72);
-  --cs-shadow-soft: 0 12px 45px rgba(0,0,0,.50);
-  --cs-focus: 0 0 0 3px rgba(34,211,238,.28);
-
-  --cs-font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans";
+  --nf-shadow: 0 22px 90px rgba(0,0,0,.72);
+  --nf-shadow-soft: 0 12px 45px rgba(0,0,0,.50);
 }
 
-/* Base */
+/* Background + typography */
 html, body{
   background:
     radial-gradient(1200px 900px at 12% 10%, rgba(124,92,255,.16), transparent 60%),
     radial-gradient(1000px 800px at 85% 25%, rgba(34,211,238,.10), transparent 55%),
-    linear-gradient(180deg, var(--cs-bg2), var(--cs-bg)) !important;
-  color: var(--cs-text) !important;
-  font-family: var(--cs-font) !important;
+    linear-gradient(180deg, var(--nf-bg1), var(--nf-bg0)) !important;
+  color: var(--nf-text) !important;
 }
 
-*{ -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-a, .link, .button-link{ color: var(--cs-text) !important; }
-a:hover{ color:#fff !important; }
-
-/* Header / nav more “streaming app” */
-.headerTop, .appheader, .skinHeader, .topHeader, .mainHeader{
-  background: rgba(7,10,18,.72) !important;
-  border-bottom: 1px solid rgba(255,255,255,.08) !important;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-}
-.mainDrawer, .navDrawer, .drawer, .paperList{
-  background: rgba(7,10,18,.78) !important;
-  border-right: 1px solid rgba(255,255,255,.08) !important;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-}
-
-/* Make the page feel wider like Netflix */
-.page, .mainAnimatedPage, .homePage, .libraryPage, .pageContent, .scrollY{
-  background: transparent !important;
-}
+/* Make homepage wide like Netflix */
 .homePage{
-  padding-left: var(--cs-page-pad) !important;
-  padding-right: var(--cs-page-pad) !important;
+  padding-left: var(--nf-page-pad) !important;
+  padding-right: var(--nf-page-pad) !important;
 }
 
-/* Section titles: bigger + tighter spacing */
-.homePage .sectionTitle,
-.homePage h2,
-.homePage h3{
-  font-weight: 800 !important;
-  letter-spacing: .15px !important;
-  margin: 0 0 10px 0 !important;
-}
-.secondaryText, .fieldDescription, .labelText, .overview, .mediaInfo, .itemDetailValue{
-  color: var(--cs-dim) !important;
-}
-
-/* Tighten vertical rhythm between shelves */
+/* Tighter shelf rhythm */
 .homePage .verticalSection,
 .homePage .section0{
-  margin-top: var(--cs-row-gap) !important;
+  margin-top: var(--nf-row-gap) !important;
 }
 
-/* =========================================
-   NETFLIX-LIKE SHELF ROWS
-   ========================================= */
+/* ================================
+   10.11.x Shelf Containers
+   (this is what makes it “work”)
+   ================================ */
 
-/* The row wrapper: remove clipping so hover can “pop” */
-.sectionContent,
+/* Many rows are inside emby-itemscontainer + scrollSlider wrappers */
+emby-itemscontainer.scrollSlider,
+.scrollSlider,
 .homeSectionsContainer,
-.itemsContainer{
-  overflow: visible !important;
+.sectionContent{
+  overflow: visible !important; /* allow hover pop */
 }
 
-/* Tighten gaps between cards */
-.itemsContainer,
-.homeSectionsContainer,
-.sectionContent .itemsContainer{
-  gap: var(--cs-card-gap) !important;
+/* The actual horizontal list */
+.scrollSlider .itemsContainer,
+emby-itemscontainer.scrollSlider .itemsContainer,
+.homeSectionsContainer .itemsContainer{
+  display: flex !important;
+  gap: var(--nf-card-gap) !important;
+  overflow-x: auto !important;
+  overflow-y: visible !important;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: 14px;
+  padding-bottom: 14px !important;
 }
 
-/* FORCE landscape card sizing for home rows (matches your screenshot) */
-.homePage .itemsContainer > *{
-  /* Many Jellyfin builds wrap cards in an extra div */
+/* Each item wrapper inside the row */
+.scrollSlider .itemsContainer > * ,
+emby-itemscontainer.scrollSlider .itemsContainer > * ,
+.homeSectionsContainer .itemsContainer > *{
   flex: 0 0 auto !important;
-  width: var(--cs-card-w) !important;
+  width: var(--nf-card-w) !important;
+  scroll-snap-align: start;
 }
 
-/* Target the actual card / image box */
-.card, .cardBox, .cardScalable{
-  border-radius: var(--cs-r) !important;
+/* Card base (Jellyfin uses card + cardBox + cardScalable a lot) */
+.card,
+.cardBox,
+.cardScalable{
+  border-radius: var(--nf-r) !important;
   transform: translateZ(0);
   will-change: transform;
-  transition:
-    transform var(--cs-fast) var(--cs-ease),
-    box-shadow var(--cs-fast) var(--cs-ease),
-    filter var(--cs-fast) var(--cs-ease);
+  transition: transform 160ms var(--nf-ease), box-shadow 160ms var(--nf-ease), filter 160ms var(--nf-ease);
 }
 
-/* Fix the media image to be a consistent Netflix-like rectangle */
+/* Card image container(s) */
 .cardImageContainer,
-.cardImage,
 .primaryImageWrapper{
-  border-radius: var(--cs-r) !important;
+  border-radius: var(--nf-r) !important;
   overflow: hidden !important;
-}
-
-/* Stronger “card looks expensive” treatment */
-.cardImageContainer img,
-.primaryImageWrapper img{
-  border-radius: var(--cs-r) !important;
-  width: 100% !important;
-  height: var(--cs-card-h) !important;
-  object-fit: cover !important;
-  filter: saturate(1.07) contrast(1.06);
-}
-
-/* Netflix vignette */
-.cardImageContainer,
-.primaryImageWrapper{
   position: relative !important;
 }
+
+/* Force consistent landscape image height (Netflix shelf feel) */
+.cardImageContainer img,
+.primaryImageWrapper img{
+  width: 100% !important;
+  height: var(--nf-card-h) !important;
+  object-fit: cover !important;
+  border-radius: var(--nf-r) !important;
+  filter: saturate(1.08) contrast(1.06);
+}
+
+/* Premium vignette like Netflix */
 .cardImageContainer::after,
 .primaryImageWrapper::after{
   content:"";
   position:absolute; inset:0;
   background:
     radial-gradient(120% 100% at 50% 10%, rgba(255,255,255,.09), transparent 55%),
-    linear-gradient(180deg, rgba(0,0,0,.00) 55%, rgba(0,0,0,.42) 100%);
+    linear-gradient(180deg, rgba(0,0,0,.00) 55%, rgba(0,0,0,.45) 100%);
   pointer-events:none;
 }
 
-/* Netflix hover: lift + scale + glow and “come forward” */
-.card:hover, .cardBox:hover, .cardScalable:hover{
+/* Hover = Netflix pop */
+.card:hover,
+.cardBox:hover,
+.cardScalable:hover{
   transform: translateY(-10px) scale(1.06);
-  box-shadow: var(--cs-shadow);
-  filter: saturate(1.10) contrast(1.08);
+  box-shadow: var(--nf-shadow);
+  filter: saturate(1.12) contrast(1.08);
   z-index: 50 !important;
 }
 
-/* Reduce under-card clutter on home (Netflix keeps shelves clean) */
+/* Reduce clutter under posters on Home shelves */
 .homePage .cardText-secondary,
 .homePage .cardText-secondaryLine{
   display: none !important;
 }
-
-/* Keep title line but tighten it */
 .homePage .cardText{
   margin-top: 8px !important;
   font-weight: 650 !important;
-  letter-spacing: .1px !important;
+  color: rgba(255,255,255,.92) !important;
 }
 
-/* Scroll snap makes shelves feel like Netflix */
-.itemsContainer{
-  scroll-snap-type: x mandatory;
-  scroll-padding-left: 10px;
-}
-.itemsContainer > *{
-  scroll-snap-align: start;
+/* Header polish */
+.headerTop, .appheader, .skinHeader, .topHeader, .mainHeader{
+  background: rgba(7,10,18,.72) !important;
+  border-bottom: 1px solid rgba(255,255,255,.08) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
-/* Buttons / controls feel more premium */
-button, .button, .emby-button, .raisedButton, .paper-icon-button-light{
-  border-radius: var(--cs-r2) !important;
+/* Buttons */
+.emby-button.submit, .button-submit, .raisedButton.submit, .btnPrimary, .fab{
+  background: linear-gradient(135deg, var(--nf-accent), var(--nf-accent2)) !important;
+  border: none !important;
+  color: #fff !important;
+}
+button, .button, .emby-button, .raisedButton{
+  border-radius: 12px !important;
   border: 1px solid rgba(255,255,255,.12) !important;
   background: rgba(255,255,255,.05) !important;
 }
@@ -199,41 +168,8 @@ button:hover, .button:hover, .emby-button:hover{
   border-color: rgba(34,211,238,.30) !important;
   background: rgba(255,255,255,.07) !important;
 }
-.emby-button.submit, .button-submit, .raisedButton.submit, .btnPrimary, .fab{
-  background: linear-gradient(135deg, var(--cs-accent), var(--cs-accent2)) !important;
-  border: none !important;
-  color: #fff !important;
-}
 
-/* Focus ring (keyboard/remote) */
-:where(a, button, input, textarea, select, [tabindex]):focus-visible{
-  outline: none !important;
-  box-shadow: var(--cs-focus) !important;
-  border-color: rgba(34,211,238,.55) !important;
-}
-
-/* Player OSD */
-.nowPlayingPage, .playerPage,
-.videoOsdBottom, .videoOsdTop, .osdHeader, .osdControls{
-  background: rgba(7,10,18,.60) !important;
-  border-top: 1px solid rgba(255,255,255,.08) !important;
-  border-bottom: 1px solid rgba(255,255,255,.08) !important;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-}
-
-/* Detail hero polish */
-.detailPagePrimaryContainer{
-  overflow: hidden !important;
-  position: relative !important;
-  border-radius: var(--cs-r) !important;
-}
-.detailPagePrimaryContainer::before{
-  content:"";
-  position:absolute; inset:-2px;
-  background:
-    radial-gradient(1000px 600px at 18% 15%, rgba(34,211,238,.16), transparent 60%),
-    radial-gradient(900px 600px at 78% 30%, rgba(124,92,255,.12), transparent 58%),
-    linear-gradient(180deg, rgba(0,0,0,.06), rgba(0,0,0,.48));
-  pointer-events:none;
+/* Text colors */
+.secondaryText, .fieldDescription, .labelText, .overview, .mediaInfo, .itemDetailValue{
+  color: var(--nf-dim) !important;
 }

@@ -1,293 +1,197 @@
 /* =========================================================
-   Jellyfin Web Theme: CineStream PRO + Netflix-like Layout (CSS ONLY)
-   - No JS needed
-   - Strong Netflix shelf vibe: big posters, tight rows, snap scroll
-   - Safe: avoids hard layout rewrites that break settings pages
+   CineStream v3 — Netflix-like layout (CSS only)
+   Replace your theme.css with this.
    ========================================================= */
 
 :root{
-  --cs-accent:  #22d3ee; /* cyan (no red) */
-  --cs-accent2: #7c5cff; /* violet */
+  --cs-accent:#22d3ee;     /* cyan */
+  --cs-accent2:#7c5cff;    /* violet */
 
-  --cs-bg0:#060812;
-  --cs-bg1:#090d1a;
+  --cs-bg:#070912;
   --cs-bg2:#0b1020;
 
-  --cs-surface:  rgba(255,255,255,.055);
-  --cs-surface2: rgba(255,255,255,.085);
-  --cs-border:   rgba(255,255,255,.10);
+  --cs-text:rgba(255,255,255,.94);
+  --cs-dim: rgba(255,255,255,.70);
 
-  --cs-text: rgba(255,255,255,.92);
-  --cs-dim:  rgba(255,255,255,.70);
-  --cs-faint:rgba(255,255,255,.52);
+  --cs-r:14px;
+  --cs-r2:12px;
 
-  /* Netflix-ish radii */
-  --cs-r-lg: 16px;
-  --cs-r-md: 12px;
-  --cs-r-sm: 10px;
+  --cs-ease:cubic-bezier(.2,.8,.2,1);
+  --cs-fast:160ms;
 
-  /* Motion */
-  --cs-ease: cubic-bezier(.2,.8,.2,1);
-  --cs-fast: 160ms;
-  --cs-med:  220ms;
+  /* Netflix-like density */
+  --cs-page-pad: clamp(14px, 2.4vw, 34px);
+  --cs-row-gap: 14px;
+  --cs-card-gap: 10px;
 
-  --cs-shadow:      0 22px 90px rgba(0,0,0,.70);
+  /* Card sizing (you can tweak these) */
+  --cs-card-w: clamp(240px, 22vw, 420px);  /* landscape rows like Continue Watching */
+  --cs-card-h: clamp(135px, 12.5vw, 230px);
+
+  --cs-shadow: 0 22px 90px rgba(0,0,0,.72);
   --cs-shadow-soft: 0 12px 45px rgba(0,0,0,.50);
-
-  --cs-blur: 16px;
   --cs-focus: 0 0 0 3px rgba(34,211,238,.28);
-
-  /* Shelf sizing (Netflix feel) */
-  --cs-poster-w: 168px;     /* base poster width */
-  --cs-poster-w-lg: 190px;  /* slightly larger */
-  --cs-card-gap: 10px;      /* tight row spacing */
-  --cs-row-gap: 18px;       /* gap between shelves */
-  --cs-zoom: 1.07;          /* hover zoom */
-  --cs-lift: -8px;          /* hover lift */
 
   --cs-font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans";
 }
 
-/* ---------------------------------------------------------
-   Base
-   --------------------------------------------------------- */
+/* Base */
 html, body{
   background:
-    radial-gradient(1200px 900px at 12% 8%, rgba(124,92,255,.16), transparent 60%),
-    radial-gradient(1000px 800px at 85% 22%, rgba(34,211,238,.12), transparent 55%),
-    radial-gradient(900px 650px at 42% 96%, rgba(16,185,129,.06), transparent 60%),
-    linear-gradient(180deg, var(--cs-bg2), var(--cs-bg0)) !important;
+    radial-gradient(1200px 900px at 12% 10%, rgba(124,92,255,.16), transparent 60%),
+    radial-gradient(1000px 800px at 85% 25%, rgba(34,211,238,.10), transparent 55%),
+    linear-gradient(180deg, var(--cs-bg2), var(--cs-bg)) !important;
   color: var(--cs-text) !important;
   font-family: var(--cs-font) !important;
 }
 
-*{
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
+*{ -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 a, .link, .button-link{ color: var(--cs-text) !important; }
 a:hover{ color:#fff !important; }
 
-/* Scrollbars */
-*::-webkit-scrollbar{ width: 12px; height: 12px; }
-*::-webkit-scrollbar-track{ background: rgba(255,255,255,.04); }
-*::-webkit-scrollbar-thumb{
-  background: linear-gradient(180deg, rgba(34,211,238,.55), rgba(124,92,255,.40));
-  border-radius: 999px;
-  border: 3px solid rgba(0,0,0,.25);
-}
-*{ scrollbar-width: thin; scrollbar-color: rgba(34,211,238,.55) rgba(255,255,255,.04); }
-
-/* ---------------------------------------------------------
-   App chrome: header + drawer
-   --------------------------------------------------------- */
+/* Header / nav more “streaming app” */
 .headerTop, .appheader, .skinHeader, .topHeader, .mainHeader{
-  background: rgba(7,10,18,.62) !important;
-  border-bottom: 1px solid rgba(255,255,255,.09) !important;
-  backdrop-filter: blur(var(--cs-blur));
-  -webkit-backdrop-filter: blur(var(--cs-blur));
+  background: rgba(7,10,18,.72) !important;
+  border-bottom: 1px solid rgba(255,255,255,.08) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
-
 .mainDrawer, .navDrawer, .drawer, .paperList{
-  background: rgba(7,10,18,.70) !important;
-  border-right: 1px solid rgba(255,255,255,.09) !important;
-  backdrop-filter: blur(var(--cs-blur));
-  -webkit-backdrop-filter: blur(var(--cs-blur));
+  background: rgba(7,10,18,.78) !important;
+  border-right: 1px solid rgba(255,255,255,.08) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
-/* Drawer items */
-.navMenuOption, .paperList a{
-  color: var(--cs-dim) !important;
-  border-radius: 12px !important;
-}
-.navMenuOption:hover, .paperList a:hover{
-  background: rgba(255,255,255,.06) !important;
-  color: #fff !important;
-}
-.navMenuOption-selected, .selectedMenuOption{
-  background: linear-gradient(90deg, rgba(34,211,238,.22), rgba(255,255,255,.04)) !important;
-  color:#fff !important;
-  border-left: 3px solid var(--cs-accent) !important;
-}
-
-/* Keep content backgrounds transparent */
-.page, .mainAnimatedPage, .libraryPage, .homePage, .pageContent, .scrollY{
+/* Make the page feel wider like Netflix */
+.page, .mainAnimatedPage, .homePage, .libraryPage, .pageContent, .scrollY{
   background: transparent !important;
 }
+.homePage{
+  padding-left: var(--cs-page-pad) !important;
+  padding-right: var(--cs-page-pad) !important;
+}
 
-/* ---------------------------------------------------------
-   Netflix-like shelves: spacing + typography
-   --------------------------------------------------------- */
+/* Section titles: bigger + tighter spacing */
+.homePage .sectionTitle,
+.homePage h2,
+.homePage h3{
+  font-weight: 800 !important;
+  letter-spacing: .15px !important;
+  margin: 0 0 10px 0 !important;
+}
+.secondaryText, .fieldDescription, .labelText, .overview, .mediaInfo, .itemDetailValue{
+  color: var(--cs-dim) !important;
+}
+
+/* Tighten vertical rhythm between shelves */
 .homePage .verticalSection,
 .homePage .section0{
   margin-top: var(--cs-row-gap) !important;
 }
 
-.homePage .sectionTitle,
-.homePage h2,
-.homePage h3{
-  font-weight: 750 !important;
-  letter-spacing: .15px !important;
+/* =========================================
+   NETFLIX-LIKE SHELF ROWS
+   ========================================= */
+
+/* The row wrapper: remove clipping so hover can “pop” */
+.sectionContent,
+.homeSectionsContainer,
+.itemsContainer{
+  overflow: visible !important;
 }
 
-.secondaryText, .fieldDescription, .labelText, .overview, .mediaInfo, .itemDetailValue{
-  color: var(--cs-dim) !important;
-}
-
-hr, .divider, .horizontalDivider, .sectionDivider{
-  border-color: rgba(255,255,255,.08) !important;
-  opacity: 1 !important;
-}
-
-/* ---------------------------------------------------------
-   Surfaces (dialogs/panels) — premium but restrained
-   --------------------------------------------------------- */
-.paper, .raised, .dialog, .toast,
-.detailPagePrimaryContainer, .detailPageSecondaryContainer,
-.playlistPage, .userProfilesPage{
-  background: var(--cs-surface) !important;
-  border: 1px solid rgba(255,255,255,.10) !important;
-  border-radius: var(--cs-r-lg) !important;
-  box-shadow: var(--cs-shadow-soft);
-  backdrop-filter: blur(calc(var(--cs-blur) * .85));
-  -webkit-backdrop-filter: blur(calc(var(--cs-blur) * .85));
-}
-
-/* ---------------------------------------------------------
-   Netflix-like card sizing (bigger posters, tighter gaps)
-   Jellyfin uses different wrappers by view; keep selectors broad
-   --------------------------------------------------------- */
-
-/* Tighten row gap between cards */
+/* Tighten gaps between cards */
 .itemsContainer,
 .homeSectionsContainer,
-.sectionContent,
 .sectionContent .itemsContainer{
   gap: var(--cs-card-gap) !important;
 }
 
-/* Let hovered cards float above neighbors (Netflix feel) */
-.itemsContainer,
-.homeSectionsContainer,
-.sectionContent{
-  overflow: visible !important;
+/* FORCE landscape card sizing for home rows (matches your screenshot) */
+.homePage .itemsContainer > *{
+  /* Many Jellyfin builds wrap cards in an extra div */
+  flex: 0 0 auto !important;
+  width: var(--cs-card-w) !important;
 }
 
-/* Default poster/card width (works across most Jellyfin poster views) */
-.card,
-.cardBox,
-.itemsContainer .card,
-.homeSectionsContainer .card{
-  border-radius: var(--cs-r-lg) !important;
+/* Target the actual card / image box */
+.card, .cardBox, .cardScalable{
+  border-radius: var(--cs-r) !important;
   transform: translateZ(0);
   will-change: transform;
+  transition:
+    transform var(--cs-fast) var(--cs-ease),
+    box-shadow var(--cs-fast) var(--cs-ease),
+    filter var(--cs-fast) var(--cs-ease);
 }
 
-/* Try to normalize poster widths without breaking layouts */
-.cardBox,
-.cardScalable,
-.cardContent{
-  border-radius: var(--cs-r-lg) !important;
+/* Fix the media image to be a consistent Netflix-like rectangle */
+.cardImageContainer,
+.cardImage,
+.primaryImageWrapper{
+  border-radius: var(--cs-r) !important;
+  overflow: hidden !important;
 }
 
-/* Rounded poster images */
-.cardImageContainer, .cardImage, .cardContent,
-.primaryImageWrapper, .primaryImageWrapper img,
-.cardImageContainer img{
-  border-radius: var(--cs-r-lg) !important;
-}
-
-/* Give posters a “premium finish” */
+/* Stronger “card looks expensive” treatment */
 .cardImageContainer img,
 .primaryImageWrapper img{
-  filter: saturate(1.03) contrast(1.03);
+  border-radius: var(--cs-r) !important;
+  width: 100% !important;
+  height: var(--cs-card-h) !important;
+  object-fit: cover !important;
+  filter: saturate(1.07) contrast(1.06);
 }
 
-/* Vignette overlay like Netflix */
+/* Netflix vignette */
 .cardImageContainer,
 .primaryImageWrapper{
   position: relative !important;
-  overflow: hidden !important;
 }
 .cardImageContainer::after,
 .primaryImageWrapper::after{
   content:"";
   position:absolute; inset:0;
   background:
-    linear-gradient(180deg, rgba(0,0,0,.00) 55%, rgba(0,0,0,.36) 100%),
-    radial-gradient(120% 90% at 50% 12%, rgba(255,255,255,.07), transparent 55%);
+    radial-gradient(120% 100% at 50% 10%, rgba(255,255,255,.09), transparent 55%),
+    linear-gradient(180deg, rgba(0,0,0,.00) 55%, rgba(0,0,0,.42) 100%);
   pointer-events:none;
 }
 
-/* ---------------------------------------------------------
-   Netflix hover: zoom + lift + bring-to-front + subtle glow
-   --------------------------------------------------------- */
-.cardBox,
-.card,
-.itemsContainer .card{
-  transition:
-    transform var(--cs-fast) var(--cs-ease),
-    box-shadow var(--cs-fast) var(--cs-ease),
-    filter var(--cs-fast) var(--cs-ease),
-    border-color var(--cs-fast) var(--cs-ease);
-}
-
-.cardBox:hover,
-.card:hover,
-.itemsContainer .card:hover{
-  transform: translateY(var(--cs-lift)) scale(var(--cs-zoom));
+/* Netflix hover: lift + scale + glow and “come forward” */
+.card:hover, .cardBox:hover, .cardScalable:hover{
+  transform: translateY(-10px) scale(1.06);
   box-shadow: var(--cs-shadow);
-  border-color: rgba(34,211,238,.28) !important;
-  filter: saturate(1.07) contrast(1.05);
-  z-index: 20 !important;
+  filter: saturate(1.10) contrast(1.08);
+  z-index: 50 !important;
 }
 
-/* Make sure the hovered card isn't clipped by a parent */
-.itemsContainer *:has(> .card:hover),
-.homeSectionsContainer *:has(> .card:hover){
-  overflow: visible !important;
-}
-
-/* Card text cleanup (Netflix keeps it minimal) */
-.cardText, .cardText-secondary, .cardText-firstLine, .cardText-secondaryLine{
-  letter-spacing: .15px !important;
-}
-.cardText-secondary, .cardText-secondaryLine{
-  color: rgba(255,255,255,.68) !important;
-}
-
-/* Optional: reduce extra clutter under posters on home shelves */
+/* Reduce under-card clutter on home (Netflix keeps shelves clean) */
 .homePage .cardText-secondary,
 .homePage .cardText-secondaryLine{
   display: none !important;
 }
 
-/* ---------------------------------------------------------
-   Horizontal shelf behavior: scroll snap (Netflix-ish)
-   Works even if Jellyfin already does horizontal scrollers
-   --------------------------------------------------------- */
+/* Keep title line but tighten it */
+.homePage .cardText{
+  margin-top: 8px !important;
+  font-weight: 650 !important;
+  letter-spacing: .1px !important;
+}
+
+/* Scroll snap makes shelves feel like Netflix */
 .itemsContainer{
   scroll-snap-type: x mandatory;
-  scroll-padding-left: 18px;
+  scroll-padding-left: 10px;
 }
 .itemsContainer > *{
   scroll-snap-align: start;
 }
 
-/* Hide horizontal scrollbar visually but keep it usable */
-.itemsContainer::-webkit-scrollbar{
-  height: 10px;
-}
-.itemsContainer::-webkit-scrollbar-thumb{
-  border-radius: 999px;
-}
-
-/* ---------------------------------------------------------
-   Buttons / inputs
-   --------------------------------------------------------- */
+/* Buttons / controls feel more premium */
 button, .button, .emby-button, .raisedButton, .paper-icon-button-light{
-  border-radius: var(--cs-r-md) !important;
+  border-radius: var(--cs-r2) !important;
   border: 1px solid rgba(255,255,255,.12) !important;
   background: rgba(255,255,255,.05) !important;
 }
@@ -295,48 +199,34 @@ button:hover, .button:hover, .emby-button:hover{
   border-color: rgba(34,211,238,.30) !important;
   background: rgba(255,255,255,.07) !important;
 }
-
 .emby-button.submit, .button-submit, .raisedButton.submit, .btnPrimary, .fab{
   background: linear-gradient(135deg, var(--cs-accent), var(--cs-accent2)) !important;
   border: none !important;
   color: #fff !important;
 }
-.emby-button.submit:hover, .button-submit:hover, .btnPrimary:hover{
-  filter: brightness(1.06);
-}
 
-input, textarea, select, .inputContainer input, .selectContainer select{
-  background: rgba(255,255,255,.06) !important;
-  border: 1px solid rgba(255,255,255,.12) !important;
-  border-radius: var(--cs-r-md) !important;
-  color: var(--cs-text) !important;
-}
-input::placeholder, textarea::placeholder{ color: rgba(255,255,255,.45) !important; }
-
+/* Focus ring (keyboard/remote) */
 :where(a, button, input, textarea, select, [tabindex]):focus-visible{
   outline: none !important;
   box-shadow: var(--cs-focus) !important;
   border-color: rgba(34,211,238,.55) !important;
 }
 
-/* ---------------------------------------------------------
-   Player OSD
-   --------------------------------------------------------- */
+/* Player OSD */
 .nowPlayingPage, .playerPage,
 .videoOsdBottom, .videoOsdTop, .osdHeader, .osdControls{
-  background: rgba(7,10,18,.56) !important;
+  background: rgba(7,10,18,.60) !important;
   border-top: 1px solid rgba(255,255,255,.08) !important;
   border-bottom: 1px solid rgba(255,255,255,.08) !important;
-  backdrop-filter: blur(var(--cs-blur));
-  -webkit-backdrop-filter: blur(var(--cs-blur));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
-/* ---------------------------------------------------------
-   Detail page hero
-   --------------------------------------------------------- */
+/* Detail hero polish */
 .detailPagePrimaryContainer{
   overflow: hidden !important;
   position: relative !important;
+  border-radius: var(--cs-r) !important;
 }
 .detailPagePrimaryContainer::before{
   content:"";
@@ -344,17 +234,6 @@ input::placeholder, textarea::placeholder{ color: rgba(255,255,255,.45) !importa
   background:
     radial-gradient(1000px 600px at 18% 15%, rgba(34,211,238,.16), transparent 60%),
     radial-gradient(900px 600px at 78% 30%, rgba(124,92,255,.12), transparent 58%),
-    linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.46));
+    linear-gradient(180deg, rgba(0,0,0,.06), rgba(0,0,0,.48));
   pointer-events:none;
 }
-
-/* Make the primary poster/hero area feel more “cinematic” */
-.detailPagePrimaryContainer .primaryImageWrapper{
-  box-shadow: 0 18px 70px rgba(0,0,0,.55);
-}
-
-/* ---------------------------------------------------------
-   Small “native” consistency touches
-   --------------------------------------------------------- */
-.toast, .dialog{ border-radius: var(--cs-r-lg) !important; }
-img{ border-radius: inherit; }

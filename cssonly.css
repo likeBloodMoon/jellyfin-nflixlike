@@ -1,48 +1,62 @@
 /* =========================================================
-   Jellyfin Web Theme: CineStream (CSS ONLY, no JS)
-   Netflix-ish polish, NOT red, safe (doesn't break layout)
-   Paste into Jellyfin Custom CSS OR host as theme.css
+   Jellyfin Web Theme: CineStream PRO + Netflix-like Layout (CSS ONLY)
+   - No JS needed
+   - Strong Netflix shelf vibe: big posters, tight rows, snap scroll
+   - Safe: avoids hard layout rewrites that break settings pages
    ========================================================= */
 
 :root{
-  --cs-accent: #22d3ee;         /* cyan */
-  --cs-accent2:#7c5cff;         /* violet */
-  --cs-good:   #10b981;
+  --cs-accent:  #22d3ee; /* cyan (no red) */
+  --cs-accent2: #7c5cff; /* violet */
 
-  --cs-bg0: #070912;
-  --cs-bg1: #0b1020;
-  --cs-bg2: #0a0f1c;
+  --cs-bg0:#060812;
+  --cs-bg1:#090d1a;
+  --cs-bg2:#0b1020;
 
-  --cs-surface: rgba(255,255,255,.055);
+  --cs-surface:  rgba(255,255,255,.055);
   --cs-surface2: rgba(255,255,255,.085);
-  --cs-border: rgba(255,255,255,.10);
+  --cs-border:   rgba(255,255,255,.10);
 
   --cs-text: rgba(255,255,255,.92);
-  --cs-dim:  rgba(255,255,255,.68);
-  --cs-faint:rgba(255,255,255,.50);
+  --cs-dim:  rgba(255,255,255,.70);
+  --cs-faint:rgba(255,255,255,.52);
 
-  --cs-radius-lg: 18px;
-  --cs-radius-md: 14px;
+  /* Netflix-ish radii */
+  --cs-r-lg: 16px;
+  --cs-r-md: 12px;
+  --cs-r-sm: 10px;
 
-  --cs-shadow: 0 18px 70px rgba(0,0,0,.62);
-  --cs-shadow-soft: 0 10px 40px rgba(0,0,0,.45);
-
-  --cs-blur: 16px;
+  /* Motion */
   --cs-ease: cubic-bezier(.2,.8,.2,1);
   --cs-fast: 160ms;
+  --cs-med:  220ms;
 
+  --cs-shadow:      0 22px 90px rgba(0,0,0,.70);
+  --cs-shadow-soft: 0 12px 45px rgba(0,0,0,.50);
+
+  --cs-blur: 16px;
   --cs-focus: 0 0 0 3px rgba(34,211,238,.28);
+
+  /* Shelf sizing (Netflix feel) */
+  --cs-poster-w: 168px;     /* base poster width */
+  --cs-poster-w-lg: 190px;  /* slightly larger */
+  --cs-card-gap: 10px;      /* tight row spacing */
+  --cs-row-gap: 18px;       /* gap between shelves */
+  --cs-zoom: 1.07;          /* hover zoom */
+  --cs-lift: -8px;          /* hover lift */
 
   --cs-font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans";
 }
 
-/* Background + base */
+/* ---------------------------------------------------------
+   Base
+   --------------------------------------------------------- */
 html, body{
   background:
-    radial-gradient(1200px 900px at 12% 10%, rgba(124,92,255,.16), transparent 60%),
-    radial-gradient(1000px 800px at 85% 25%, rgba(34,211,238,.12), transparent 55%),
-    radial-gradient(900px 650px at 40% 95%, rgba(16,185,129,.07), transparent 60%),
-    linear-gradient(180deg, var(--cs-bg1), var(--cs-bg0)) !important;
+    radial-gradient(1200px 900px at 12% 8%, rgba(124,92,255,.16), transparent 60%),
+    radial-gradient(1000px 800px at 85% 22%, rgba(34,211,238,.12), transparent 55%),
+    radial-gradient(900px 650px at 42% 96%, rgba(16,185,129,.06), transparent 60%),
+    linear-gradient(180deg, var(--cs-bg2), var(--cs-bg0)) !important;
   color: var(--cs-text) !important;
   font-family: var(--cs-font) !important;
 }
@@ -51,6 +65,9 @@ html, body{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+a, .link, .button-link{ color: var(--cs-text) !important; }
+a:hover{ color:#fff !important; }
 
 /* Scrollbars */
 *::-webkit-scrollbar{ width: 12px; height: 12px; }
@@ -62,114 +79,223 @@ html, body{
 }
 *{ scrollbar-width: thin; scrollbar-color: rgba(34,211,238,.55) rgba(255,255,255,.04); }
 
-/* Links */
-a, .link, .button-link{ color: var(--cs-text) !important; }
-a:hover{ color: #fff !important; }
-
-/* =========================================================
+/* ---------------------------------------------------------
    App chrome: header + drawer
-   (broad selectors for Jellyfin web versions)
-   ========================================================= */
+   --------------------------------------------------------- */
 .headerTop, .appheader, .skinHeader, .topHeader, .mainHeader{
-  background: rgba(8,11,20,.62) !important;
-  border-bottom: 1px solid var(--cs-border) !important;
+  background: rgba(7,10,18,.62) !important;
+  border-bottom: 1px solid rgba(255,255,255,.09) !important;
   backdrop-filter: blur(var(--cs-blur));
   -webkit-backdrop-filter: blur(var(--cs-blur));
 }
 
-/* Side nav / drawer */
 .mainDrawer, .navDrawer, .drawer, .paperList{
-  background: rgba(8,11,20,.68) !important;
-  border-right: 1px solid var(--cs-border) !important;
+  background: rgba(7,10,18,.70) !important;
+  border-right: 1px solid rgba(255,255,255,.09) !important;
   backdrop-filter: blur(var(--cs-blur));
   -webkit-backdrop-filter: blur(var(--cs-blur));
 }
 
+/* Drawer items */
 .navMenuOption, .paperList a{
   color: var(--cs-dim) !important;
   border-radius: 12px !important;
 }
 .navMenuOption:hover, .paperList a:hover{
   background: rgba(255,255,255,.06) !important;
-  color: var(--cs-text) !important;
+  color: #fff !important;
 }
 .navMenuOption-selected, .selectedMenuOption{
   background: linear-gradient(90deg, rgba(34,211,238,.22), rgba(255,255,255,.04)) !important;
-  color: #fff !important;
+  color:#fff !important;
   border-left: 3px solid var(--cs-accent) !important;
 }
 
-/* Containers transparent (don’t change layout) */
+/* Keep content backgrounds transparent */
 .page, .mainAnimatedPage, .libraryPage, .homePage, .pageContent, .scrollY{
   background: transparent !important;
 }
 
-/* =========================================================
-   Surfaces: dialogs/panels/cards (safe, no layout changes)
-   ========================================================= */
-.paper, .raised, .dialog, .toast,
-.detailPagePrimaryContainer, .detailPageSecondaryContainer,
-.playlistPage, .userProfilesPage{
-  background: var(--cs-surface) !important;
-  border: 1px solid var(--cs-border) !important;
-  border-radius: var(--cs-radius-lg) !important;
-  box-shadow: var(--cs-shadow-soft);
-  backdrop-filter: blur(calc(var(--cs-blur) * .85));
-  -webkit-backdrop-filter: blur(calc(var(--cs-blur) * .85));
+/* ---------------------------------------------------------
+   Netflix-like shelves: spacing + typography
+   --------------------------------------------------------- */
+.homePage .verticalSection,
+.homePage .section0{
+  margin-top: var(--cs-row-gap) !important;
 }
 
-/* Cards */
-.card, .cardBox, .itemsContainer .card, .homeSectionsContainer .card{
-  border-radius: var(--cs-radius-lg) !important;
-  transform: translateZ(0);
+.homePage .sectionTitle,
+.homePage h2,
+.homePage h3{
+  font-weight: 750 !important;
+  letter-spacing: .15px !important;
 }
 
-/* Poster rounding */
-.cardImageContainer, .cardImage, .cardContent,
-.primaryImageWrapper, .primaryImageWrapper img,
-.cardImageContainer img{
-  border-radius: var(--cs-radius-lg) !important;
-}
-
-/* Hover polish: lift only (no scale = more “native”) */
-.cardBox:hover, .card:hover, .itemsContainer .card:hover{
-  transform: translateY(-3px);
-  transition: transform var(--cs-fast) var(--cs-ease),
-              box-shadow var(--cs-fast) var(--cs-ease),
-              border-color var(--cs-fast) var(--cs-ease);
-  border-color: rgba(34,211,238,.30) !important;
-  box-shadow: var(--cs-shadow);
-}
-
-/* Section titles */
-.homePage .sectionTitle, .homePage h2, .homePage h3{
-  font-weight: 650 !important;
-  letter-spacing: .2px !important;
-}
-
-/* Text hierarchy */
 .secondaryText, .fieldDescription, .labelText, .overview, .mediaInfo, .itemDetailValue{
   color: var(--cs-dim) !important;
 }
 
-/* Dividers */
 hr, .divider, .horizontalDivider, .sectionDivider{
   border-color: rgba(255,255,255,.08) !important;
   opacity: 1 !important;
 }
 
-/* =========================================================
-   Controls: buttons / inputs / focus
-   ========================================================= */
-button, .button, .emby-button, .raisedButton, .paper-icon-button-light{
-  border-radius: var(--cs-radius-md) !important;
-  border: 1px solid rgba(255,255,255,.12) !important;
-}
-button:hover, .button:hover, .emby-button:hover{
-  border-color: rgba(34,211,238,.35) !important;
+/* ---------------------------------------------------------
+   Surfaces (dialogs/panels) — premium but restrained
+   --------------------------------------------------------- */
+.paper, .raised, .dialog, .toast,
+.detailPagePrimaryContainer, .detailPageSecondaryContainer,
+.playlistPage, .userProfilesPage{
+  background: var(--cs-surface) !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  border-radius: var(--cs-r-lg) !important;
+  box-shadow: var(--cs-shadow-soft);
+  backdrop-filter: blur(calc(var(--cs-blur) * .85));
+  -webkit-backdrop-filter: blur(calc(var(--cs-blur) * .85));
 }
 
-/* Primary CTA */
+/* ---------------------------------------------------------
+   Netflix-like card sizing (bigger posters, tighter gaps)
+   Jellyfin uses different wrappers by view; keep selectors broad
+   --------------------------------------------------------- */
+
+/* Tighten row gap between cards */
+.itemsContainer,
+.homeSectionsContainer,
+.sectionContent,
+.sectionContent .itemsContainer{
+  gap: var(--cs-card-gap) !important;
+}
+
+/* Let hovered cards float above neighbors (Netflix feel) */
+.itemsContainer,
+.homeSectionsContainer,
+.sectionContent{
+  overflow: visible !important;
+}
+
+/* Default poster/card width (works across most Jellyfin poster views) */
+.card,
+.cardBox,
+.itemsContainer .card,
+.homeSectionsContainer .card{
+  border-radius: var(--cs-r-lg) !important;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Try to normalize poster widths without breaking layouts */
+.cardBox,
+.cardScalable,
+.cardContent{
+  border-radius: var(--cs-r-lg) !important;
+}
+
+/* Rounded poster images */
+.cardImageContainer, .cardImage, .cardContent,
+.primaryImageWrapper, .primaryImageWrapper img,
+.cardImageContainer img{
+  border-radius: var(--cs-r-lg) !important;
+}
+
+/* Give posters a “premium finish” */
+.cardImageContainer img,
+.primaryImageWrapper img{
+  filter: saturate(1.03) contrast(1.03);
+}
+
+/* Vignette overlay like Netflix */
+.cardImageContainer,
+.primaryImageWrapper{
+  position: relative !important;
+  overflow: hidden !important;
+}
+.cardImageContainer::after,
+.primaryImageWrapper::after{
+  content:"";
+  position:absolute; inset:0;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.00) 55%, rgba(0,0,0,.36) 100%),
+    radial-gradient(120% 90% at 50% 12%, rgba(255,255,255,.07), transparent 55%);
+  pointer-events:none;
+}
+
+/* ---------------------------------------------------------
+   Netflix hover: zoom + lift + bring-to-front + subtle glow
+   --------------------------------------------------------- */
+.cardBox,
+.card,
+.itemsContainer .card{
+  transition:
+    transform var(--cs-fast) var(--cs-ease),
+    box-shadow var(--cs-fast) var(--cs-ease),
+    filter var(--cs-fast) var(--cs-ease),
+    border-color var(--cs-fast) var(--cs-ease);
+}
+
+.cardBox:hover,
+.card:hover,
+.itemsContainer .card:hover{
+  transform: translateY(var(--cs-lift)) scale(var(--cs-zoom));
+  box-shadow: var(--cs-shadow);
+  border-color: rgba(34,211,238,.28) !important;
+  filter: saturate(1.07) contrast(1.05);
+  z-index: 20 !important;
+}
+
+/* Make sure the hovered card isn't clipped by a parent */
+.itemsContainer *:has(> .card:hover),
+.homeSectionsContainer *:has(> .card:hover){
+  overflow: visible !important;
+}
+
+/* Card text cleanup (Netflix keeps it minimal) */
+.cardText, .cardText-secondary, .cardText-firstLine, .cardText-secondaryLine{
+  letter-spacing: .15px !important;
+}
+.cardText-secondary, .cardText-secondaryLine{
+  color: rgba(255,255,255,.68) !important;
+}
+
+/* Optional: reduce extra clutter under posters on home shelves */
+.homePage .cardText-secondary,
+.homePage .cardText-secondaryLine{
+  display: none !important;
+}
+
+/* ---------------------------------------------------------
+   Horizontal shelf behavior: scroll snap (Netflix-ish)
+   Works even if Jellyfin already does horizontal scrollers
+   --------------------------------------------------------- */
+.itemsContainer{
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: 18px;
+}
+.itemsContainer > *{
+  scroll-snap-align: start;
+}
+
+/* Hide horizontal scrollbar visually but keep it usable */
+.itemsContainer::-webkit-scrollbar{
+  height: 10px;
+}
+.itemsContainer::-webkit-scrollbar-thumb{
+  border-radius: 999px;
+}
+
+/* ---------------------------------------------------------
+   Buttons / inputs
+   --------------------------------------------------------- */
+button, .button, .emby-button, .raisedButton, .paper-icon-button-light{
+  border-radius: var(--cs-r-md) !important;
+  border: 1px solid rgba(255,255,255,.12) !important;
+  background: rgba(255,255,255,.05) !important;
+}
+button:hover, .button:hover, .emby-button:hover{
+  border-color: rgba(34,211,238,.30) !important;
+  background: rgba(255,255,255,.07) !important;
+}
+
 .emby-button.submit, .button-submit, .raisedButton.submit, .btnPrimary, .fab{
   background: linear-gradient(135deg, var(--cs-accent), var(--cs-accent2)) !important;
   border: none !important;
@@ -179,35 +305,35 @@ button:hover, .button:hover, .emby-button:hover{
   filter: brightness(1.06);
 }
 
-/* Inputs */
 input, textarea, select, .inputContainer input, .selectContainer select{
   background: rgba(255,255,255,.06) !important;
   border: 1px solid rgba(255,255,255,.12) !important;
-  border-radius: var(--cs-radius-md) !important;
+  border-radius: var(--cs-r-md) !important;
   color: var(--cs-text) !important;
 }
 input::placeholder, textarea::placeholder{ color: rgba(255,255,255,.45) !important; }
 
-/* Focus (remote/keyboard friendly) */
 :where(a, button, input, textarea, select, [tabindex]):focus-visible{
   outline: none !important;
   box-shadow: var(--cs-focus) !important;
   border-color: rgba(34,211,238,.55) !important;
 }
 
-/* =========================================================
-   Player OSD (keep readable)
-   ========================================================= */
-.nowPlayingPage, .playerPage, .videoOsdBottom, .videoOsdTop, .osdHeader, .osdControls{
-  background: rgba(8,11,20,.52) !important;
+/* ---------------------------------------------------------
+   Player OSD
+   --------------------------------------------------------- */
+.nowPlayingPage, .playerPage,
+.videoOsdBottom, .videoOsdTop, .osdHeader, .osdControls{
+  background: rgba(7,10,18,.56) !important;
+  border-top: 1px solid rgba(255,255,255,.08) !important;
+  border-bottom: 1px solid rgba(255,255,255,.08) !important;
   backdrop-filter: blur(var(--cs-blur));
   -webkit-backdrop-filter: blur(var(--cs-blur));
 }
 
-/* =========================================================
-   Detail page “hero” polish (CSS-only, no route detection)
-   Applied whenever detail container exists.
-   ========================================================= */
+/* ---------------------------------------------------------
+   Detail page hero
+   --------------------------------------------------------- */
 .detailPagePrimaryContainer{
   overflow: hidden !important;
   position: relative !important;
@@ -218,6 +344,17 @@ input::placeholder, textarea::placeholder{ color: rgba(255,255,255,.45) !importa
   background:
     radial-gradient(1000px 600px at 18% 15%, rgba(34,211,238,.16), transparent 60%),
     radial-gradient(900px 600px at 78% 30%, rgba(124,92,255,.12), transparent 58%),
-    linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.42));
+    linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.46));
   pointer-events:none;
 }
+
+/* Make the primary poster/hero area feel more “cinematic” */
+.detailPagePrimaryContainer .primaryImageWrapper{
+  box-shadow: 0 18px 70px rgba(0,0,0,.55);
+}
+
+/* ---------------------------------------------------------
+   Small “native” consistency touches
+   --------------------------------------------------------- */
+.toast, .dialog{ border-radius: var(--cs-r-lg) !important; }
+img{ border-radius: inherit; }
